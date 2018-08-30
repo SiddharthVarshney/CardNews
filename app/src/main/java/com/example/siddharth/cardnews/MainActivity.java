@@ -1,5 +1,6 @@
 package com.example.siddharth.cardnews;
 
+import android.annotation.SuppressLint;
 import android.app.LoaderManager;
 import android.content.Intent;
 import android.content.Loader;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -18,16 +20,13 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements LoaderCallbacks<List<NewsData>> {
 
-    private static final String NEWS_REQUEST_URL ="https://newsapi.org/v2/top-headlines?country=in&apiKey=02d5a6c928c14944b23057e1054b68d9";
-
     /** Tag for log messages */
     public static final String LOG_TAG = NewsLoader.class.getName();
-
-    private  NewsAdapter mAdapter;
-
-    private TextView mEmptyStateTextView;
-
+    private static final String NEWS_REQUEST_URL ="https://newsapi.org/v2/top-headlines?country=in&apiKey=02d5a6c928c14944b23057e1054b68d9";
     private static  final  int NEWS_LOADER_ID=1;
+    private  NewsAdapter mAdapter;
+    private TextView mEmptyStateTextView;
+//    private ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,14 +77,17 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
         return new NewsLoader(this,NEWS_REQUEST_URL);
     }
 
+    @SuppressLint("WrongConstant")
     @Override
     public void onLoadFinished(Loader<List<NewsData>> loader, List<NewsData> news) {
         mAdapter.clear();
         if(news !=null && !news.isEmpty()){
             mAdapter.addAll(news);
         }
-
         mEmptyStateTextView.setText(R.string.no_news);
+
+        ProgressBar spinner= (ProgressBar)findViewById(R.id.loading_spinner);
+        spinner.setVisibility(View.GONE);
 
     }
 

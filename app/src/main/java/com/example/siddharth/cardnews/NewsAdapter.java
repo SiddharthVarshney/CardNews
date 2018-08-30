@@ -6,14 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
 import java.util.List;
 
 public class NewsAdapter extends ArrayAdapter<NewsData> {
 
 
-    public NewsAdapter(Context context, List<NewsData> news){
-        super(context,0,news);
-        }
+    public NewsAdapter(Context context, List<NewsData> news) {
+        super(context, 0, news);
+    }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {

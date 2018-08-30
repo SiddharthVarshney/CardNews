@@ -1,5 +1,6 @@
 package com.example.siddharth.cardnews;
 
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -27,40 +28,40 @@ public class QueryUtils {
         try {
             url = new URL(stringURL);
         } catch (MalformedURLException e) {
-            Log.e(LOG_TAG, "Problem building the URL",e);
+            Log.e(LOG_TAG, "Problem building the URL", e);
         }
         return url;
     }
 
-    private static String makeHttpRequest(URL url)throws IOException {
+    private static String makeHttpRequest(URL url) throws IOException {
         String jsonResponse = "";
 
-        if(url==null){
+        if (url == null) {
             return jsonResponse;
         }
 
         HttpURLConnection urlConnection = null;
         InputStream inputStream = null;
         try {
-            urlConnection =(HttpURLConnection) url.openConnection();
+            urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setReadTimeout(1000);
             urlConnection.setConnectTimeout(15000);
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
 
-            if (urlConnection.getResponseCode()==200){
+            if (urlConnection.getResponseCode() == 200) {
                 inputStream = urlConnection.getInputStream();
                 jsonResponse = readFromStream(inputStream);
-            }else {
-                Log.e(LOG_TAG,"Error response code : "+ urlConnection.getResponseCode());
+            } else {
+                Log.e(LOG_TAG, "Error response code : " + urlConnection.getResponseCode());
             }
-        }catch (IOException e){
-            Log.e(LOG_TAG, "Problem retreving the earthquake JSON results.",e);
-        }finally {
-            if (urlConnection != null){
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Problem retreving the earthquake JSON results.", e);
+        } finally {
+            if (urlConnection != null) {
                 urlConnection.disconnect();
             }
-            if(inputStream != null){
+            if (inputStream != null) {
                 inputStream.close();
             }
         }
@@ -81,7 +82,7 @@ public class QueryUtils {
         return output.toString();
     }
 
-    private static List<NewsData> extractFeaturesFromJson(String newsJSON){
+    private static List<NewsData> extractFeaturesFromJson(String newsJSON) {
 
 
         try {
@@ -102,31 +103,35 @@ public class QueryUtils {
 
             JSONArray newsArray = baseJsonResponse.getJSONArray("articles");
 
-            for (int i = 0; i<newsArray.length();i++){
+            for (int i = 0; i < newsArray.length(); i++) {
                 JSONObject currentNews = newsArray.getJSONObject(i);
 
-               String headline = currentNews.getString("title");
+                String headline = currentNews.getString("title");
 
                 String url = currentNews.getString("url");
 
                 String date_time = currentNews.getString("publishedAt");
 
-                NewsData newNews = new NewsData(url,headline,date_time);
+                NewsData newNews = new NewsData(url, headline, date_time);
 
                 news.add(newNews);
 
             }
 
-        }
-
-        catch (JSONException e){
-            Log.e("QueryUtils","Problem parsing the news JSON results",e );
+        } catch (JSONException e) {
+            Log.e("QueryUtils", "Problem parsing the news JSON results", e);
         }
         return news;
 
     }
 
-    public  static  List<NewsData> fetchNewsData(String requestUrl){
+    public static List<NewsData> fetchNewsData(String requestUrl) {
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         URL url = createURL(requestUrl);
 
