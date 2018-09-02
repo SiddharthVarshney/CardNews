@@ -5,12 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class NewsAdapter extends ArrayAdapter<NewsData> {
-
 
     public NewsAdapter(Context context, List<NewsData> news) {
         super(context, 0, news);
@@ -35,6 +37,7 @@ public class NewsAdapter extends ArrayAdapter<NewsData> {
         String date;
         String time;
 
+
         if (originalTime.contains("T")) {
             String[] parts = originalTime.split("T");
             date = parts[0];
@@ -50,6 +53,11 @@ public class NewsAdapter extends ArrayAdapter<NewsData> {
 
         TextView timeView = listItemView.findViewById(R.id.time);
         timeView.setText(time);
+
+
+        String imageUri=currentNews.getmImageUrl();
+        ImageView newsImage = listItemView.findViewById(R.id.news_image);
+        Picasso.with(getContext()).load(imageUri).into(newsImage);
 
 
         return listItemView;

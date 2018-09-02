@@ -8,11 +8,14 @@ public class NewsData {
 
     private String mDate_time;
 
+    private String mImageUrl;
 
-    public NewsData(String url, String headline, String date_time) {
+
+    public NewsData(String url, String headline, String date_time,String image_url) {
         mHeadline = headline;
         mDate_time = date_time;
         mUrl = url;
+        mImageUrl = image_url;
     }
 
     public String getmHeadline() {
@@ -27,4 +30,9 @@ public class NewsData {
         return mUrl;
     }
 
+    public String getmImageUrl() {
+        return mImageUrl;
+    }
+
 }
+

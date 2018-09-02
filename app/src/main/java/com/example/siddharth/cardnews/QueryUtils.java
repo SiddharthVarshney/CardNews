@@ -112,7 +112,9 @@ public class QueryUtils {
 
                 String date_time = currentNews.getString("publishedAt");
 
-                NewsData newNews = new NewsData(url, headline, date_time);
+                String image_url = currentNews.getString("urlToImage");
+
+                NewsData newNews = new NewsData(url, headline, date_time,image_url);
 
                 news.add(newNews);
 
