@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class NewsAdapter extends ArrayAdapter<NewsData> {
@@ -34,25 +37,18 @@ public class NewsAdapter extends ArrayAdapter<NewsData> {
         headlineView.setText(currentNews.getmHeadline());
 
         String originalTime = currentNews.getmDate_time();
-        String date;
-        String time;
 
 
-        if (originalTime.contains("T")) {
-            String[] parts = originalTime.split("T");
-            date = parts[0];
-            String[] parts1 = parts[1].split("Z");
-            time = parts1[0];
-        } else {
-            time = getContext().getString(R.string.not_avilalble);
-            date = time;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        Date date = null;
+        try {
+            date = sdf.parse(originalTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
-
+        String newDate = new SimpleDateFormat("dd-MM-yyyy").format(date);
         TextView dateView = listItemView.findViewById(R.id.date);
-        dateView.setText(date);
-
-        TextView timeView = listItemView.findViewById(R.id.time);
-        timeView.setText(time);
+        dateView.setText(newDate);
 
 
         String imageUri=currentNews.getmImageUrl();
